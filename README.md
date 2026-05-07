@@ -61,7 +61,33 @@ The **top 5 pickup zones** (132, 79, 249, 48, 230) account for **22.3% of all pi
 
 **Source:** NYC Taxi & Limousine Commission (TLC) — 2023 Yellow Taxi Trip Records
 **Format:** 12 monthly Parquet files (Jan – Dec 2023)
-**Sampling:** Stratified random 5% per date-hour group (`random_state=42`) — preserves temporal distribution
+**Raw scale:** ~38 million trip records across the year (~3 GB on disk)
+**Working sample:** **1,896,400 rows** — 5% stratified sample per date-hour group, combined into a single Parquet file
+
+### 🔍 Why sampling was necessary
+
+The full 2023 TLC release is **12 separate monthly Parquet files totalling ~38 million rows** — too large to load into memory on Google Colab's free tier (≈12 GB RAM) without crashing the kernel during groupby aggregations, joins to the 263-zone shapefile, and choropleth rendering.
+
+Rather than analyse one month at a time (which would distort yearly seasonality) or use a flat random 5% across the whole year (which would under-represent low-volume hours like 3 AM Tuesdays), the project uses **stratified random sampling per date-hour bucket** (`frac=0.05, random_state=42`). For every (date, hour) combination across all 12 months, exactly 5% of trips are drawn. This:
+
+- preserves the original **temporal distribution** (peak hours stay peak hours, quiet hours stay quiet)
+- keeps Q1/Q2/Q3/Q4 seasonality intact
+- yields a reproducible sample (`random_state=42`)
+- shrinks 38M rows → 1.9M rows — small enough to fit in RAM, large enough that hourly/zonal aggregates remain statistically stable
+
+### 📦 Per-file sample sizes (5% stratified)
+
+| Month | Sampled rows | Month | Sampled rows |
+|---|---:|---|---:|
+| 2023-01 | 152,087 | 2023-07 | 174,068 |
+| 2023-02 | 168,696 | 2023-08 | 143,782 |
+| 2023-03 | 163,786 | 2023-09 | 140,875 |
+| 2023-04 | 139,641 | 2023-10 | 174,255 |
+| 2023-05 | 144,458 | 2023-11 | 165,133 |
+| 2023-06 | 162,910 | 2023-12 | 166,709 |
+| | | **Combined** | **1,896,400** |
+
+The 12 sampled per-month dataframes are concatenated and saved as a single `nyc_taxi_sampled.parquet` (22 columns), which becomes the input for all downstream cleaning and EDA — so every cell after Section 1 reads from one file instead of twelve.
 
 ### Key columns
 
@@ -185,7 +211,7 @@ The **top 5 pickup zones** (132, 79, 249, 48, 230) account for **22.3% of all pi
 
 ---
 
-## 💵 Revenue Impact Summary
+## 🔵 Revenue Impact Summary
 
 | Strategy Area | Annual Revenue Impact |
 |---|---|
@@ -218,7 +244,7 @@ The **top 5 pickup zones** (132, 79, 249, 48, 230) account for **22.3% of all pi
 ```
 nyc-yellow-taxi-eda-2023/
 │
-├── EDA_NYC_Taxi_Analysis_Shubham_Kanauji.ipynb   ← Main analysis notebook
+├── EDA_NYC_Taxi_Analysis_Shubham.ipynb           ← Main analysis notebook
 ├── README.md                                      ← This file
 │
 ├── Data/                                          ← Not included (TLC source)
