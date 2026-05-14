@@ -303,8 +303,6 @@ MyDrive/NYC_Taxi_EDA Assignment/taxi_zones/
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-buildwshub-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/buildwshub/)
 [![GitHub](https://img.shields.io/badge/GitHub-buildwshub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/buildwshub)
 
-**Assignment:** EDA/02 — Optimising NYC Taxi Operations
-**Institution:** upGrad
 **Dataset:** NYC TLC 2023 Yellow Taxi Trip Records (Public Domain)
 
 ---
