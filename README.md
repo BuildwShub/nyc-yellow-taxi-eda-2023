@@ -19,7 +19,10 @@
 | **2,042,850** | **$58.2M** | **263** | **18–24%** (+$20.4M – $28.1M) |
 
 ---
-
+Google Drive Link to access 12 Parquet file : https://drive.google.com/drive/folders/1Fwnk7djreCggaRvTsynI_Y5SVn2Kq7s2?usp=sharing
+Google Drive Link to access Sampled File : https://drive.google.com/file/d/1F4FDl-tZrraJpCz4ToE8ZhYynp9dxfRE/view?usp=sharing
+Google Drive Link to access Taxi Zones used for GeoPandas : https://drive.google.com/drive/folders/1JnZ0_bJuYaNOdSPfLiYO-JSN4ZTbwCOa?usp=sharing
+ 
 ## 📑 Table of Contents
 
 1. [Project Overview](#-project-overview)
